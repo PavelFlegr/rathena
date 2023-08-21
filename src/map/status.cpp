@@ -1557,8 +1557,11 @@ int status_damage(struct block_list *src,struct block_list *target,int64 dhp, in
 	}
 
 	if( status->hp || (flag&8) ) { // Still lives or has been dead before this damage.
-		if (walkdelay)
+		if (walkdelay) {
 			unit_set_walkdelay(target, gettick(), walkdelay, 0);
+			if (target->type == BL_PC)
+				clif_walkok(BL_CAST(BL_PC, target));
+		}
 		return (int)(hp+sp+ap);
 	}
 
